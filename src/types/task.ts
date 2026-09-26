@@ -29,6 +29,3 @@ export type TaskPatch = Partial<
 >
 
 export type ViewId = 'today' | 'upcoming' | 'completed'
-
-/** Everything the sidebar can open: the task views plus non-task pages. */
-export type PageId = ViewId | 'integrations'

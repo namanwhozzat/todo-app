@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useReducer, type ReactNode } from 'react'
 import type { TaskRepository } from '../storage/TaskRepository'
-import { syncedTaskRepository } from '../storage/syncedTaskRepository'
+import { localTaskRepository } from '../storage/localTaskRepository'
 import { initialTasksState, tasksReducer } from './tasksReducer'
 import { TasksContext, type TasksContextValue } from './TasksContext'
 import { createSeedTasks } from './seed'
@@ -14,7 +14,7 @@ interface Props {
 
 export function TasksProvider({
   children,
-  repository = syncedTaskRepository,
+  repository = localTaskRepository,
   seedWhenEmpty = true,
 }: Props) {
   const [state, dispatch] = useReducer(tasksReducer, initialTasksState)
