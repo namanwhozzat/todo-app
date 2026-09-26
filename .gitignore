@@ -5,6 +5,3 @@ dist
 *.tsbuildinfo
 
 .env
-
-# Server-side task copy and digest state (server/)
-data

@@ -1,4 +1,4 @@
-import type { PageId, ViewId } from '../types/task'
+import type { ViewId } from '../types/task'
 
 const VIEWS: Array<{ id: ViewId; label: string }> = [
   { id: 'today', label: 'Today' },
@@ -7,13 +7,13 @@ const VIEWS: Array<{ id: ViewId; label: string }> = [
 ]
 
 interface Props {
-  active: PageId
+  active: ViewId
   counts: Record<ViewId, number>
-  onSelect: (page: PageId) => void
+  onSelect: (page: ViewId) => void
 }
 
 export function Sidebar({ active, counts, onSelect }: Props) {
-  const item = (id: PageId) => ({
+  const item = (id: ViewId) => ({
     className: `nav-item${active === id ? ' nav-item--active' : ''}`,
     'aria-current': active === id ? ('page' as const) : undefined,
     onClick: () => onSelect(id),
@@ -29,11 +29,6 @@ export function Sidebar({ active, counts, onSelect }: Props) {
             {counts[view.id] > 0 && <span className="nav-item__count">{counts[view.id]}</span>}
           </button>
         ))}
-      </nav>
-      <nav className="sidebar__nav sidebar__nav--secondary">
-        <button {...item('integrations')}>
-          <span>Integrations</span>
-        </button>
       </nav>
     </aside>
   )
