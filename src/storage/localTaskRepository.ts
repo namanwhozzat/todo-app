@@ -1,7 +1,21 @@
-import type { Task } from '../types/task'
+import type { Task, TaskAnalysis } from '../types/task'
 import type { TaskRepository } from './TaskRepository'
 
 const STORAGE_KEY = 'todo-app.tasks.v1'
+
+function reviveAnalysis(raw: unknown): TaskAnalysis | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const a = raw as Record<string, unknown>
+  if (typeof a.summary !== 'string' || typeof a.analyzedAt !== 'string') return null
+  return {
+    summary: a.summary,
+    priority: a.priority === 'low' || a.priority === 'high' ? a.priority : 'medium',
+    category: typeof a.category === 'string' ? a.category : '',
+    estimateMinutes: typeof a.estimateMinutes === 'number' ? a.estimateMinutes : null,
+    subtasks: Array.isArray(a.subtasks) ? a.subtasks.filter((s): s is string => typeof s === 'string') : [],
+    analyzedAt: a.analyzedAt,
+  }
+}
 
 /** Narrow an unknown parsed value into a Task, filling in anything missing. */
 function reviveTask(raw: unknown): Task | null {
@@ -19,6 +33,7 @@ function reviveTask(raw: unknown): Task | null {
     completedAt: typeof t.completedAt === 'string' ? t.completedAt : null,
     createdAt: typeof t.createdAt === 'string' ? t.createdAt : now,
     updatedAt: typeof t.updatedAt === 'string' ? t.updatedAt : now,
+    analysis: reviveAnalysis(t.analysis),
   }
 }
 

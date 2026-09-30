@@ -5,7 +5,7 @@ import { todayAt, tomorrowAt } from '../lib/date'
 /** First-run sample tasks so an empty app still shows what it can do. */
 export function createSeedTasks(): Task[] {
   const now = new Date().toISOString()
-  const base = { completed: false, completedAt: null, createdAt: now, updatedAt: now }
+  const base = { completed: false, completedAt: null, createdAt: now, updatedAt: now, analysis: null }
 
   return [
     {

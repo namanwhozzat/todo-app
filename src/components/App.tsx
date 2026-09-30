@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
-import type { ViewId } from '../types/task'
+import type { Page, ViewId } from '../types/task'
 import { useTasks } from '../state/TasksContext'
 import { countView, selectView } from '../state/selectors'
+import { IntegrationsPage } from './IntegrationsPage'
 import { Sidebar } from './Sidebar'
 import { TaskComposer } from './TaskComposer'
 import { TaskList } from './TaskList'
@@ -20,7 +21,7 @@ const todayLabel = new Intl.DateTimeFormat(undefined, {
 
 export function App() {
   const { tasks } = useTasks()
-  const [page, setPage] = useState<ViewId>('today')
+  const [page, setPage] = useState<Page>('today')
 
   const counts = useMemo(
     () => ({
@@ -36,7 +37,7 @@ export function App() {
       <Sidebar active={page} counts={counts} onSelect={setPage} />
 
       <main className="main">
-        <TasksView view={page} />
+        {page === 'integrations' ? <IntegrationsPage /> : <TasksView view={page} />}
       </main>
     </div>
   )

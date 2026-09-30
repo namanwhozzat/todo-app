@@ -1,5 +1,4 @@
 import type { Task, TaskDraft, TaskPatch } from '../types/task'
-import { createId } from '../lib/id'
 
 export interface TasksState {
   tasks: Task[]
@@ -8,7 +7,7 @@ export interface TasksState {
 
 export type TasksAction =
   | { type: 'hydrate'; tasks: Task[] }
-  | { type: 'add'; draft: TaskDraft }
+  | { type: 'add'; id: string; draft: TaskDraft }
   | { type: 'update'; id: string; patch: TaskPatch }
   | { type: 'toggle'; id: string }
   | { type: 'remove'; id: string }
@@ -28,7 +27,7 @@ export function tasksReducer(state: TasksState, action: TasksAction): TasksState
     case 'add': {
       const now = new Date().toISOString()
       const task: Task = {
-        id: createId(),
+        id: action.id,
         title: action.draft.title.trim(),
         description: action.draft.description?.trim() ?? '',
         dueAt: action.draft.dueAt ?? null,
@@ -36,6 +35,7 @@ export function tasksReducer(state: TasksState, action: TasksAction): TasksState
         completedAt: null,
         createdAt: now,
         updatedAt: now,
+        analysis: null,
       }
       return { ...state, tasks: [task, ...state.tasks] }
     }

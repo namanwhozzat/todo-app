@@ -14,6 +14,19 @@ export interface Task {
   completedAt: string | null
   createdAt: string
   updatedAt: string
+  /** Set by the GTWY agent after the task is added; null until then or if it failed. */
+  analysis: TaskAnalysis | null
+}
+
+export type TaskPriority = 'low' | 'medium' | 'high'
+
+export interface TaskAnalysis {
+  summary: string
+  priority: TaskPriority
+  category: string
+  estimateMinutes: number | null
+  subtasks: string[]
+  analyzedAt: string
 }
 
 /** Fields a user can supply when creating a task. */
@@ -25,7 +38,10 @@ export interface TaskDraft {
 
 /** Fields that may be patched on an existing task. */
 export type TaskPatch = Partial<
-  Pick<Task, 'title' | 'description' | 'dueAt' | 'completed'>
+  Pick<Task, 'title' | 'description' | 'dueAt' | 'completed' | 'analysis'>
 >
 
 export type ViewId = 'today' | 'upcoming' | 'completed'
+
+/** Everything the sidebar can navigate to. */
+export type Page = ViewId | 'integrations'

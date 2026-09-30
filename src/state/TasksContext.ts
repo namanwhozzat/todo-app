@@ -9,6 +9,10 @@ export interface TasksContextValue {
   toggleTask: (id: string) => void
   removeTask: (id: string) => void
   clearCompleted: () => void
+  /** Runs the GTWY agent on a task. Called automatically on add; exposed for retries. */
+  analyzeTask: (id: string) => void
+  /** Analysis state that isn't persisted: in flight, or the last error. */
+  analysisState: Record<string, { pending: true } | { pending: false; error: string }>
 }
 
 export const TasksContext = createContext<TasksContextValue | null>(null)
